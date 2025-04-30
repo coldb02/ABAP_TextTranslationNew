@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>YKCD_EX_COL</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>YKCD_CHAR07_ALPHA</DOMNAME>
+    <SCRLEN1>05</SCRLEN1>
+    <SCRLEN2>10</SCRLEN2>
+    <SCRLEN3>15</SCRLEN3>
+    <DDTEXT>Flexible Excel upload: column number</DDTEXT>
+    <SCRTEXT_S>Col.</SCRTEXT_S>
+    <SCRTEXT_M>Column</SCRTEXT_M>
+    <SCRTEXT_L>Column Number</SCRTEXT_L>
+    <DTELMASTER>E</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>1</LANGU>
+    <LANGU>C</LANGU>
+    <LANGU>D</LANGU>
+    <LANGU>F</LANGU>
+    <LANGU>H</LANGU>
+    <LANGU>P</LANGU>
+    <LANGU>Q</LANGU>
+    <LANGU>S</LANGU>
+    <LANGU>d</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>1</DDLANGUAGE>
+     <DDTEXT>灵活 Excel 上载：列号</DDTEXT>
+     <SCRTEXT_S>列</SCRTEXT_S>
+     <SCRTEXT_M>列</SCRTEXT_M>
+     <SCRTEXT_L>列编号</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>C</DDLANGUAGE>
+     <DDTEXT>Flexibilní upload Excelu: Číslo sloupce</DDTEXT>
+     <SCRTEXT_S>Sl.</SCRTEXT_S>
+     <SCRTEXT_M>Sloupec</SCRTEXT_M>
+     <SCRTEXT_L>Číslo sloupce</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Flexibler Excelupload: Spaltennummer</DDTEXT>
+     <SCRTEXT_S>Splt.</SCRTEXT_S>
+     <SCRTEXT_M>Spalte</SCRTEXT_M>
+     <SCRTEXT_L>Spaltennummer</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>F</DDLANGUAGE>
+     <DDTEXT>Upload excel flexible : numéro de colonne</DDTEXT>
+     <SCRTEXT_S>Col.</SCRTEXT_S>
+     <SCRTEXT_M>Colonne</SCRTEXT_M>
+     <SCRTEXT_L>Nº de colonne</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>H</DDLANGUAGE>
+     <DDTEXT>Flexibilis Excel upload: oszlopszám</DDTEXT>
+     <SCRTEXT_S>Oszl.</SCRTEXT_S>
+     <SCRTEXT_M>Oszlop</SCRTEXT_M>
+     <SCRTEXT_L>Oszlopszám</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>P</DDLANGUAGE>
+     <DDTEXT>Upload flexível de excel: nº da coluna</DDTEXT>
+     <SCRTEXT_S>Col.</SCRTEXT_S>
+     <SCRTEXT_M>Coluna</SCRTEXT_M>
+     <SCRTEXT_L>Nº coluna</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Q</DDLANGUAGE>
+     <DDTEXT>Flexib.upload excelu: Číslo stĺpca</DDTEXT>
+     <SCRTEXT_S>Stĺpc</SCRTEXT_S>
+     <SCRTEXT_M>Stĺpec</SCRTEXT_M>
+     <SCRTEXT_L>Číslo stĺpca</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>S</DDLANGUAGE>
+     <DDTEXT>Upload flexible Excel: número de columna</DDTEXT>
+     <SCRTEXT_S>Col.</SCRTEXT_S>
+     <SCRTEXT_M>Columna</SCRTEXT_M>
+     <SCRTEXT_L>Número columna</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>d</DDLANGUAGE>
+     <DDTEXT>Fleksibilni prenos na server Excel-a: Broj kolone</DDTEXT>
+     <SCRTEXT_S>Kol.</SCRTEXT_S>
+     <SCRTEXT_M>Kolona</SCRTEXT_M>
+     <SCRTEXT_L>Broj kolone</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
