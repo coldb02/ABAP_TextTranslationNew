@@ -4,33 +4,33 @@ Program to download and upload the translation (Improved)
 This SAP ABAP program is designed to significantly improve the process of downloading and uploading translations of SAP objects using an Excel file. 
 It provides a more efficient and user-friendly alternative to the standard SE63 transaction.
 
-# Overview
+## Overview
 ABAP_TextTranslationNew enables bulk handling of translation texts, offering improved speed and usability. 
 By leveraging custom logic and standard function modules, this tool addresses the limitations of standard methods and 
 simplifies the translation workflow—especially for complex or large-scale projects.
 
-# Why Use This Tool?
-Q1: Why do we need this program when SE63 already exists?
+## Why Use This Tool?
+Q1: Why do we need this program when SE63 already exists?<br />
 A1: Although SE63 is a powerful transaction, it has several limitations:
     1. It does not allow exporting all translation data into a single, consolidated Excel sheet.
     2. Performing translations becomes cumbersome when dealing with multiple objects, such as programs with numerous screens or GUI elements.
 
-# Key Enhancements
-Q2: What has changed?
+## Key Enhancements
+Q2: What has changed?<br />
 A2: The transaction YTRANSLATION utilizes underlying function modules (FMs) to extract translation data from SE63. This approach presents the data in a more readable and compact format, 
     streamlining both the download and upload processes.
 
-# Performance Benefits
-Q3: Why use YTRANSLATION?
+## Performance Benefits
+Q3: Why use YTRANSLATION?<br />
 A3: Consider a scenario involving 40 module pool programs, each with 10–12 screens. Manually extracting and uploading translations using SE63 could take 1–2 days. 
     With YTRANSLATION, the same task can be completed in a matter of minutes—typically no more than 30 minutes—resulting in a time savings of up to 98–99%.
 
-# Future Updates
-Q4: Will there be future enhancements?
+## Future Updates
+Q4: Will there be future enhancements?<br />
 A4: Yes. If any performance issues or additional optimization opportunities are identified, further improvements and object support will be added to future versions of the program.
 
 
-# Run T-code YTRANSLATION
+## Run T-code YTRANSLATION
 ![image](https://github.com/user-attachments/assets/00b168ac-72c3-4b78-aa93-246a7e2a60a1)
 
 After navigating to the main transaction code screen, you may choose any of the available radio button options and enter the corresponding data as needed.
@@ -54,7 +54,7 @@ Validate the translation form porposed text field and hit save button or CTRL+F5
 
 Your translation has been successfully saved for the corresponding SAP object.
 
-⚠️ Important Notes:
+⚠️ Important Notes: <br />
     Do not modify Columns A to F in the Excel file. These columns are used by the program for data mapping, and altering them may result in incorrect or failed uploads.
     Use Column G to enter translations for the target language.
     After uploading the Excel file, press CTRL+F5 to save the data.
