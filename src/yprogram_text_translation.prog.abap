@@ -3,7 +3,7 @@
 *&---------------------------------------------------------------------*
 *&
 *&---------------------------------------------------------------------*
-*& https://github.com/coldb02/ABAP_TextTranslation ( Reference GITHUB
+*& https://github.com/coldb02/ABAP_TextTranslationNew ( Reference GITHUB
 *& link of the latest version ( Abhinandan Dutt).
 *&---------------------------------------------------------------------*
 *& IF you do not know what id the word is all about then,
