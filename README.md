@@ -55,10 +55,10 @@ Validate the translation form porposed text field and hit save button or CTRL+F5
 Your translation has been successfully saved for the corresponding SAP object.
 
 ⚠️ Important Notes:
-# Do not modify Columns A to F in the Excel file. These columns are used by the program for data mapping, and altering them may result in incorrect or failed uploads.
-# Use Column G to enter translations for the target language.
-# After uploading the Excel file, press CTRL+F5 to save the data.
-# Finally, run transaction SLXT to include the translations in a transport request.
+    Do not modify Columns A to F in the Excel file. These columns are used by the program for data mapping, and altering them may result in incorrect or failed uploads.
+    Use Column G to enter translations for the target language.
+    After uploading the Excel file, press CTRL+F5 to save the data.
+    Finally, run transaction SLXT to include the translations in a transport request.
 
 
 
