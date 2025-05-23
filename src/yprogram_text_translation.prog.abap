@@ -440,6 +440,7 @@ FORM build_language_data .
 
   IF gv_s_lang = gv_t_lang.
     MESSAGE: TEXT-007 TYPE 'S' DISPLAY LIKE 'E'.   "Source and Target language can not be same
+    LEAVE LIST-PROCESSING.
   ENDIF.
 
 ENDFORM.
@@ -746,7 +747,7 @@ FORM fetch_ddic_table_data .
         PERFORM: fetch_build_txt_data USING 'LIMU' 'TABD' lv_trobj_name.
       ENDAT.
 
-      IF ls_dd03l-rollname(1) = 'Z' OR
+      IF ls_dd03l-rollname(1) = 'Z' OR ls_dd03l-rollname(6) = '/SMP1/' OR
          ls_dd03l-rollname(1) = 'Y' .
 *-- For Each Data Element
         CLEAR: lv_trobj_name.
@@ -754,7 +755,7 @@ FORM fetch_ddic_table_data .
         PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
       ENDIF.
 
-      IF ls_dd03l-domname(1) = 'Z' OR
+      IF ls_dd03l-domname(1) = 'Z' OR ls_dd03l-domname(6) = '/SMP1/' OR
          ls_dd03l-domname(1) = 'Y'.
 *-- for each Domain
         IF ls_dd03l-domname IS NOT INITIAL.
@@ -790,9 +791,9 @@ FORM fetch_ddic_element_data .
   IF sy-subrc = 0.
 *-- Retrive data
     LOOP AT lt_dd04l INTO DATA(ls_dd04l).
-
-      IF ls_dd04l-rollname(1) = 'Z' OR
+      IF ls_dd04l-rollname(1) = 'Z' OR ls_dd04l-rollname(6) = '/SMP1/' OR
          ls_dd04l-rollname(1) = 'Y'.
+
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd04l-rollname.
         PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
@@ -824,14 +825,12 @@ FORM fetch_ddic_domain_data .
   IF sy-subrc = 0.
 *-- Retrive data
     LOOP AT lt_dd01l INTO DATA(ls_dd01l).
-
-      IF ls_dd01l-domname(1) = 'Z' OR
+      IF ls_dd01l-domname(1) = 'Z' OR ls_dd01l-domname(6) = '/SMP1/' OR
          ls_dd01l-domname(1) = 'Y'.
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd01l-domname.
         PERFORM: fetch_build_txt_data USING 'LIMU' 'DOMD' lv_trobj_name.
       ENDIF.
-
     ENDLOOP.
   ENDIF.
 
@@ -1100,6 +1099,8 @@ FORM display_alv .
         ls_layout_key      TYPE salv_s_layout_key,
         lr_column          TYPE REF TO cl_salv_column.
 
+  FIELD-SYMBOLS: <lfx_data> TYPE ANY TABLE.
+
   IF gt_program IS NOT INITIAL.
 
     SORT gt_program BY pname   ASCENDING objtype ASCENDING
@@ -1121,7 +1122,7 @@ FORM display_alv .
 
     ENDIF.
 
-    IF line_exists( gt_upload_data[ s_text_sys = ' ' ] ) AND p_file IS NOT INITIAL.
+    IF line_exists( gt_upload_data[ t_text_prop = ' ' ] ) AND p_file IS NOT INITIAL.
       MESSAGE: TEXT-014 TYPE 'I'.
     ENDIF.
 
@@ -1138,6 +1139,13 @@ FORM display_alv .
 
 
     TRY.
+
+      IF p_file IS INITIAL.
+        ASSIGN gt_program[] TO <lfx_data>.
+      ELSE.
+        ASSIGN gt_upload_data TO <lfx_data>.
+      ENDIF.
+
         CALL METHOD cl_salv_table=>factory
           EXPORTING
             list_display = if_salv_c_bool_sap=>false
@@ -1146,7 +1154,7 @@ FORM display_alv .
           IMPORTING
             r_salv_table = DATA(lr_alv)
           CHANGING
-            t_table      = gt_program.
+            t_table      = <lfx_data>.
 
         lr_alv->set_screen_status(
           pfstatus      = COND #( WHEN p_file IS INITIAL THEN 'STANDARD'
