@@ -747,7 +747,7 @@ FORM fetch_ddic_table_data .
         PERFORM: fetch_build_txt_data USING 'LIMU' 'TABD' lv_trobj_name.
       ENDAT.
 
-      IF ls_dd03l-rollname(1) = 'Z' OR ls_dd03l-rollname(6) = '/SMP1/' OR
+      IF ls_dd03l-rollname(1) = 'Z' OR
          ls_dd03l-rollname(1) = 'Y' .
 *-- For Each Data Element
         CLEAR: lv_trobj_name.
@@ -755,7 +755,7 @@ FORM fetch_ddic_table_data .
         PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
       ENDIF.
 
-      IF ls_dd03l-domname(1) = 'Z' OR ls_dd03l-domname(6) = '/SMP1/' OR
+      IF ls_dd03l-domname(1) = 'Z'
          ls_dd03l-domname(1) = 'Y'.
 *-- for each Domain
         IF ls_dd03l-domname IS NOT INITIAL.
@@ -791,7 +791,7 @@ FORM fetch_ddic_element_data .
   IF sy-subrc = 0.
 *-- Retrive data
     LOOP AT lt_dd04l INTO DATA(ls_dd04l).
-      IF ls_dd04l-rollname(1) = 'Z' OR ls_dd04l-rollname(6) = '/SMP1/' OR
+      IF ls_dd04l-rollname(1) = 'Z'
          ls_dd04l-rollname(1) = 'Y'.
 
         CLEAR: lv_trobj_name.
@@ -825,7 +825,7 @@ FORM fetch_ddic_domain_data .
   IF sy-subrc = 0.
 *-- Retrive data
     LOOP AT lt_dd01l INTO DATA(ls_dd01l).
-      IF ls_dd01l-domname(1) = 'Z' OR ls_dd01l-domname(6) = '/SMP1/' OR
+      IF ls_dd01l-domname(1) = 'Z'
          ls_dd01l-domname(1) = 'Y'.
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd01l-domname.
@@ -1137,7 +1137,6 @@ FORM display_alv .
        AND b~spras EQ @sy-langu
       INTO TABLE @DATA(lt_t002).
 
-
     TRY.
 
       IF p_file IS INITIAL.
@@ -1246,7 +1245,7 @@ CLASS lcl_handler IMPLEMENTATION.
           lt_pcx_s1     TYPE TABLE OF lxe_pcx_s1.
 
     CASE e_salv_function.
-      WHEN '&SAVE'.
+      WHEN '&YSAVE'.
         LOOP AT gt_upload_final INTO DATA(ls_upload_final).
 
           CLEAR: lv_lxestatprc, lv_lxestring.
