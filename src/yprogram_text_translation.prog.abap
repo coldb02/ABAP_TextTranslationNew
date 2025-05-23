@@ -746,16 +746,22 @@ FORM fetch_ddic_table_data .
         PERFORM: fetch_build_txt_data USING 'LIMU' 'TABD' lv_trobj_name.
       ENDAT.
 
+      IF ls_dd03l-rollname(1) = 'Z' OR
+         ls_dd03l-rollname(1) = 'Y' .
 *-- For Each Data Element
-      CLEAR: lv_trobj_name.
-      lv_trobj_name = ls_dd03l-rollname.
-      PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
-
-*-- for each Domain
-      IF ls_dd03l-domname IS NOT INITIAL.
         CLEAR: lv_trobj_name.
-        lv_trobj_name = ls_dd03l-domname.
-        PERFORM: fetch_build_txt_data USING 'LIMU' 'DOMD' lv_trobj_name.
+        lv_trobj_name = ls_dd03l-rollname.
+        PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
+      ENDIF.
+
+      IF ls_dd03l-domname(1) = 'Z' OR
+         ls_dd03l-domname(1) = 'Y'.
+*-- for each Domain
+        IF ls_dd03l-domname IS NOT INITIAL.
+          CLEAR: lv_trobj_name.
+          lv_trobj_name = ls_dd03l-domname.
+          PERFORM: fetch_build_txt_data USING 'LIMU' 'DOMD' lv_trobj_name.
+        ENDIF.
       ENDIF.
 
     ENDLOOP.
@@ -785,9 +791,12 @@ FORM fetch_ddic_element_data .
 *-- Retrive data
     LOOP AT lt_dd04l INTO DATA(ls_dd04l).
 
-      CLEAR: lv_trobj_name.
-      lv_trobj_name = ls_dd04l-rollname.
-      PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
+      IF ls_dd04l-rollname(1) = 'Z' OR
+         ls_dd04l-rollname(1) = 'Y'.
+        CLEAR: lv_trobj_name.
+        lv_trobj_name = ls_dd04l-rollname.
+        PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
+      ENDIF.
 
     ENDLOOP.
   ENDIF.
@@ -816,9 +825,12 @@ FORM fetch_ddic_domain_data .
 *-- Retrive data
     LOOP AT lt_dd01l INTO DATA(ls_dd01l).
 
-      CLEAR: lv_trobj_name.
-      lv_trobj_name = ls_dd01l-domname.
-      PERFORM: fetch_build_txt_data USING 'LIMU' 'DOMD' lv_trobj_name.
+      IF ls_dd01l-domname(1) = 'Z' OR
+         ls_dd01l-domname(1) = 'Y'.
+        CLEAR: lv_trobj_name.
+        lv_trobj_name = ls_dd01l-domname.
+        PERFORM: fetch_build_txt_data USING 'LIMU' 'DOMD' lv_trobj_name.
+      ENDIF.
 
     ENDLOOP.
   ENDIF.
@@ -1126,47 +1138,24 @@ FORM display_alv .
 
 
     TRY.
+        CALL METHOD cl_salv_table=>factory
+          EXPORTING
+            list_display = if_salv_c_bool_sap=>false
+*           r_container  =
+*           container_name =
+          IMPORTING
+            r_salv_table = DATA(lr_alv)
+          CHANGING
+            t_table      = gt_program.
 
-        IF p_file IS INITIAL.
-          CALL METHOD cl_salv_table=>factory
-            EXPORTING
-              list_display = if_salv_c_bool_sap=>false
-*             r_container  =
-*             container_name =
-            IMPORTING
-              r_salv_table = DATA(lr_alv)
-            CHANGING
-              t_table      = gt_program.
-
-
-          lr_alv->set_screen_status(
-            pfstatus      = 'STANDARD'
-            report        = sy-repid
-            set_functions = lr_alv->c_functions_all ).
-
-        ELSE.
-          CALL METHOD cl_salv_table=>factory
-            EXPORTING
-              list_display = if_salv_c_bool_sap=>false
-*             r_container  = COND
-*             container_name =
-            IMPORTING
-              r_salv_table = lr_alv
-            CHANGING
-              t_table      = gt_upload_data.
-
-          lr_alv->set_screen_status(
-            pfstatus      = 'STANDARD_FILE'
-            report        = sy-repid
-            set_functions = lr_alv->c_functions_all ).
-
-        ENDIF.
+        lr_alv->set_screen_status(
+          pfstatus      = COND #( WHEN p_file IS INITIAL THEN 'STANDARD'
+                                    ELSE 'STANDARD_FILE' )
+          report        = sy-repid
+          set_functions = lr_alv->c_functions_all ).
 
         DATA(lr_event) = lr_alv->get_event( ).
         SET HANDLER lcl_handler=>on_user_command FOR lr_event.
-
-*        DATA(lr_functions) = lr_alv->get_functions( ).
-*        lr_functions->set_all( abap_true ).
 
         ls_layout_settings = lr_alv->get_layout( ).
 
