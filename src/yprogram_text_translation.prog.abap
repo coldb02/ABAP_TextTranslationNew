@@ -755,7 +755,7 @@ FORM fetch_ddic_table_data .
         PERFORM: fetch_build_txt_data USING 'LIMU' 'DTED' lv_trobj_name.
       ENDIF.
 
-      IF ls_dd03l-domname(1) = 'Z'
+      IF ls_dd03l-domname(1) = 'Z'  OR
          ls_dd03l-domname(1) = 'Y'.
 *-- for each Domain
         IF ls_dd03l-domname IS NOT INITIAL.
@@ -791,7 +791,7 @@ FORM fetch_ddic_element_data .
   IF sy-subrc = 0.
 *-- Retrive data
     LOOP AT lt_dd04l INTO DATA(ls_dd04l).
-      IF ls_dd04l-rollname(1) = 'Z'
+      IF ls_dd04l-rollname(1) = 'Z' OR
          ls_dd04l-rollname(1) = 'Y'.
 
         CLEAR: lv_trobj_name.
@@ -825,7 +825,7 @@ FORM fetch_ddic_domain_data .
   IF sy-subrc = 0.
 *-- Retrive data
     LOOP AT lt_dd01l INTO DATA(ls_dd01l).
-      IF ls_dd01l-domname(1) = 'Z'
+      IF ls_dd01l-domname(1) = 'Z' OR
          ls_dd01l-domname(1) = 'Y'.
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd01l-domname.
