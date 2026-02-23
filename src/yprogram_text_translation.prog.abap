@@ -3,11 +3,12 @@
 *&---------------------------------------------------------------------*
 *&
 *&---------------------------------------------------------------------*
-*& https://github.com/coldb02/ABAP_TextTranslationNew ( Reference GITHUB
-*& link of the latest version ( Abhinandan Dutt).
+*& Reference the latest version from GitHub:
+*& https://github.com/coldb02/ABAP_TextTranslationNew
+*& (Authored by Abhinandan Dutt).
 *&---------------------------------------------------------------------*
-*& IF you do not know what id the word is all about then,
-*& below is the Object Type reference in the final ALV
+*& If you're not sure what this term refers to, please see the Object
+*& Type reference in the final ALV below.
 *& CA4  : GUI Title + Funcation Keys+ buttons
 *& CAD4 : GUI Status
 *& RPT4 : Selection screen + Text Element + Report Title
@@ -22,11 +23,13 @@
 *& RPT1 : Text Element
 *& SRH1 : Module pool scrren description
 *& SRT4 : Screen text
+*&
+*& If your project uses namespace objects, make sure to include the
+*& corresponding logic in the code as well. You can search for
+*& "NamespaceCode to locate the relevant implementation.
 *&---------------------------------------------------------------------*
 
 REPORT yprogram_text_translation.
-
-*--- download table data form table 'DD03M'
 
 TABLES: rs38m, seoclass, tlibg, dd01l, dd03l, dd04l, t100.
 
@@ -367,7 +370,7 @@ FORM validate_screen_action.
 
   IF p_genr IS NOT INITIAL.
 
-    DATA(lv_question) = TEXT-009   "Do you want to translation text from Google?
+    DATA(lv_question) = TEXT-009   "Do you want to translation text from Google? " This still need work
                         && | | &&
                         TEXT-010.  "Caution! Validate text before uploading.
 
@@ -482,8 +485,10 @@ ENDFORM.
 FORM fetch_excel_data .
 
 *-- Had to create the copy of the existing FM and the data type was modifed as well
-*-- Structure       -->Field  -->Component Type
-*-- YALSMEX_TABLINE -->VALUE  -->TEXTPOOLTX
+*-- Structure       -->Component -->Component Type
+*-- YALSMEX_TABLINE -->ROW       -->YKCD_EX_ROW_N
+*-- YALSMEX_TABLINE -->COL       -->YKCD_EX_COL_N
+*-- YALSMEX_TABLINE -->VALUE     -->TEXTPOOLTX
 
   DATA: lv_upload TYPE rlgrap-filename,
         lt_excl   TYPE STANDARD TABLE OF yalsmex_tabline.
@@ -748,7 +753,7 @@ FORM fetch_ddic_table_data .
       ENDAT.
 
       IF ls_dd03l-rollname(1) = 'Z' OR
-         ls_dd03l-rollname(1) = 'Y' .
+         ls_dd03l-rollname(1) = 'Y' . " NamespaceCode
 *-- For Each Data Element
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd03l-rollname.
@@ -792,7 +797,7 @@ FORM fetch_ddic_element_data .
 *-- Retrive data
     LOOP AT lt_dd04l INTO DATA(ls_dd04l).
       IF ls_dd04l-rollname(1) = 'Z' OR
-         ls_dd04l-rollname(1) = 'Y'.
+         ls_dd04l-rollname(1) = 'Y'. "NamespaceCode
 
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd04l-rollname.
@@ -826,7 +831,7 @@ FORM fetch_ddic_domain_data .
 *-- Retrive data
     LOOP AT lt_dd01l INTO DATA(ls_dd01l).
       IF ls_dd01l-domname(1) = 'Z' OR
-         ls_dd01l-domname(1) = 'Y'.
+         ls_dd01l-domname(1) = 'Y'. "NamespaceCode
         CLEAR: lv_trobj_name.
         lv_trobj_name = ls_dd01l-domname.
         PERFORM: fetch_build_txt_data USING 'LIMU' 'DOMD' lv_trobj_name.
@@ -931,7 +936,7 @@ FORM fetch_build_txt_data  USING p_pgmid    TYPE pgmid
             gs_program-t_text  = ls_pcx_s1-t_text.
 
             APPEND gs_program TO gt_program.
-*-- case when Upload file is provided move data to UPLOAD_DATA and UPLOAD_final toble for further use.
+*-- When an upload file is supplied, transfer the data to the UPLOAD_DATA and UPLOAD_FINAL tables for subsequent use.
             IF p_uplod IS NOT INITIAL.
 *-- Read through the internal table and add the reords to the UPLOAD table
 *--           Level 1: Check with all primary keys
@@ -994,8 +999,9 @@ FORM fetch_build_txt_data  USING p_pgmid    TYPE pgmid
 
         ENDIF.
 
-*-- Text from Target to Source Langauge "Sad case
-*-- Will only happen when Source langauge of the Report/Program/Funcation Group/Message class
+*-- Text transferred from Target to Source language. This situation generally arises only when the original
+*-- source language of the Report, Program, Function Group, or Message Class is added or updated as part of
+*-- a system change.( This scenario should not occur at all. )
         IF p_comp IS NOT INITIAL AND p_uplod IS INITIAL AND 1 = 2.
 
           PERFORM: lxe_obj_text_pair_read TABLES lt_pcx_s1 USING gv_t_lang gv_s_lang lv_objtype lv_objname abap_true.
@@ -1139,11 +1145,11 @@ FORM display_alv .
 
     TRY.
 
-      IF p_file IS INITIAL.
-        ASSIGN gt_program[] TO <lfx_data>.
-      ELSE.
-        ASSIGN gt_upload_data TO <lfx_data>.
-      ENDIF.
+        IF p_file IS INITIAL.
+          ASSIGN gt_program[] TO <lfx_data>.
+        ELSE.
+          ASSIGN gt_upload_data TO <lfx_data>.
+        ENDIF.
 
         CALL METHOD cl_salv_table=>factory
           EXPORTING
@@ -1259,6 +1265,24 @@ CLASS lcl_handler IMPLEMENTATION.
                                                                  abap_false.
           CHECK lt_pcx_s1 IS NOT INITIAL.
 
+*--       Logic to assign the target text to lt_pcx_s1 table.
+          LOOP AT lt_pcx_s1 ASSIGNING FIELD-SYMBOL(<lfs_pcx_s1>).
+            READ TABLE ls_upload_final-lxe_pcx ASSIGNING FIELD-SYMBOL(<lfs_pcx>)
+                                               WITH KEY textkey = <lfs_pcx_s1>-textkey
+                                               BINARY SEARCH.
+            IF sy-subrc <> 0.
+*--          Scenario where the text is not found because of an invalid key.
+              READ TABLE ls_upload_final-lxe_pcx ASSIGNING <lfs_pcx>
+                                                 WITH KEY textkey = <lfs_pcx_s1>-textkey
+                                                          s_text  = <lfs_pcx_s1>-s_text.
+
+            ENDIF.
+            IF <lfs_pcx> IS ASSIGNED AND <lfs_pcx>-t_text IS NOT INITIAL.
+              <lfs_pcx_s1>-t_text = <lfs_pcx>-t_text.
+            ENDIF.
+            UNASSIGN: <lfs_pcx>.
+          ENDLOOP.
+
           CALL FUNCTION 'LXE_OBJ_TEXT_PAIR_WRITE'
             EXPORTING
               t_lang    = ls_upload_final-t_lang
@@ -1272,7 +1296,7 @@ CLASS lcl_handler IMPLEMENTATION.
               pstatus   = lv_lxestatprc
               err_msg   = lv_lxestring
             TABLES
-              lt_pcx_s1 = ls_upload_final-lxe_pcx.
+              lt_pcx_s1 = lt_pcx_s1.
           IF lv_lxestatprc <> 'S'.
             IF lv_lxestring IS NOT INITIAL.
               MESSAGE lv_lxestring TYPE 'I'.
