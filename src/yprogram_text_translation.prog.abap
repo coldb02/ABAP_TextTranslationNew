@@ -983,6 +983,7 @@ FORM fetch_build_txt_data  USING p_pgmid    TYPE pgmid
                                                           texttype = ls_pcx_s1-texttype ) ).
 
               ENDIF.
+              UNASSIGN: <lfs_upload_data>.
 
             ENDIF.
 
